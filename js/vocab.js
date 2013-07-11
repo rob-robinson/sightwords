@@ -63,35 +63,33 @@ function onMouseEnd(e) {
     if (e.changedTouches && e.changedTouches.length > 0) {
         releaseX = e.changedTouches[0].pageX;
         releaseY = e.changedTouches[0].pageY;
+            
+        var xOry = (Math.abs(releaseX-clickX)>Math.abs(releaseY-clickY)) ? "x" : "y";
         
-         //console.log("find delta of x's and y's determine which way has been swiped" + clickX + " " + clickY + " " + releaseX + " " + releaseY);
-            
-            var xOry = (Math.abs(releaseX-clickX)>Math.abs(releaseY-clickY)) ? "x" : "y";
-            
-            switch (xOry) {
-            	case 'x':
-            		if(releaseX-clickX > 0) {
-            			// increment
-            			(subIndex < vocab[level].length-1 ? subIndex++ : subIndex=0);
-        				reDraw();
-        	    	}
-            		else {
-            			// decrement
-            			(subIndex > 0 ? subIndex-- : subIndex=(vocab[level].length-1));
-        				reDraw();
-            		}
-            	break;
-            	
-            	case 'y':
-            		if(releaseY-clickY <= 0) {
-            			reDraw(playSound);
-            		} else {
-            			document.getElementById("content").innerHTML = getWordOrNumber();
-            		}
-            		
-            		
-            	break;
-            }
+        switch (xOry) {
+        	case 'x':
+        		if(releaseX-clickX > 0) {
+        			// increment
+        			(subIndex < vocab[level].length-1 ? subIndex++ : subIndex=0);
+    				reDraw();
+    	    	}
+        		else {
+        			// decrement
+        			(subIndex > 0 ? subIndex-- : subIndex=(vocab[level].length-1));
+    				reDraw();
+        		}
+        	break;
+        	
+        	case 'y':
+        		if(releaseY-clickY <= 0) {
+        			reDraw(playSound);
+        		} else {
+        			document.getElementById("content").innerHTML = getWordOrNumber();
+        		}
+        		
+        		
+        	break;
+        }
 
     } else {
         releaseX = e.pageX;
@@ -154,8 +152,6 @@ function KeyCheck(event) {
         document.getElementById("content").innerHTML = getWordOrNumber();
     } else if(KeyID === 32) {
     	reDraw(playSound);
-    } else if(KeyID === 78) {
-    	//document.getElementById("content").innerHTML = getNumber();
     } else {
     	console.log(KeyID);
     }
