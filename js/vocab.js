@@ -14,6 +14,22 @@ var clickY;
 var releaseX;
 var releaseY;
 
+function getWordOrNumber(){
+	var myIndex = vocab[0].length*2;
+	var myRandom = Math.floor( Math.random() * myIndex);
+	var toReturn;
+	
+	console.log(myIndex + " " + myRandom);
+	
+	if(myRandom>=vocab[0].length) {
+		toReturn = Math.floor( Math.random() * 100);
+	} else {
+		toReturn = vocab[0][myRandom];
+	}
+	
+	return toReturn;
+}
+
 function getNumber() {
 	return Math.floor( Math.random() * 1000);
 }
@@ -67,10 +83,10 @@ function onMouseEnd(e) {
             	break;
             	
             	case 'y':
-            		if(releaseY-clickY > 0) {
+            		if(releaseY-clickY <= 0) {
             			reDraw(playSound);
             		} else {
-            			document.getElementById("content").innerHTML = getNumber();
+            			document.getElementById("content").innerHTML = getWordOrNumber();
             		}
             		
             		
@@ -99,8 +115,8 @@ function reDraw(callback) {
 	ae.src = "/karis/wav/" + item[subIndex] + ".wav";
 	ae.load();
 	
-	ga('send','event','ReDraw Function','Selected '+item[subIndex]+' Via Mouse or Gesture',callback?'with callback':'no callback');
-  	setTimeout(function(){location.href=clickEvent.href},200);
+	//ga('send','event','ReDraw Function','Selected '+item[subIndex]+' Via Mouse or Gesture',callback?'with callback':'no callback');
+  	//setTimeout(function(){location.href=clickEvent.href},200);
 	
 	if(callback) {
 		callback();
@@ -134,11 +150,12 @@ function KeyCheck(event) {
     } else if (KeyID === 40) {
         //console.log('down'); 
         (level > 0 ? level-- : level=0);
-        reDraw();
+        //reDraw();
+        document.getElementById("content").innerHTML = getWordOrNumber();
     } else if(KeyID === 32) {
     	reDraw(playSound);
     } else if(KeyID === 78) {
-    	document.getElementById("content").innerHTML = getNumber();
+    	//document.getElementById("content").innerHTML = getNumber();
     } else {
     	console.log(KeyID);
     }
