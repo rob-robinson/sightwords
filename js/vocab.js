@@ -160,9 +160,9 @@ function KeyCheck(event) {
 
 
 		
-	document.getElementById("pressPlay").addEventListener('click', function() {
-		playSound();
-	}, false);
+	//document.getElementById("pressPlay").addEventListener('click', function() {
+	//	playSound();
+	//}, false);
 	
 	
 	window.addEventListener('keydown',KeyCheck,true);  
