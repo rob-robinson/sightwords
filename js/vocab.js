@@ -1,7 +1,7 @@
 
 var vocab = [
-	["I","a","the","and","is","see","can","to","like","my","said","went","play","at","look","go","up","no","it","we","come","for","here","me","are","have","on","saw","you","was",
-"12","16","18","21","11","31","13","82","107","132"	
+	[
+	"I","a","the","and","is","see","can","to","like","my","said","went","play","at","look","go","up","no","it","we","come","for","here","me","are","have","on","saw","you","was"	
 	]
 ];
 
