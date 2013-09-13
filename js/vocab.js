@@ -1,9 +1,18 @@
 
-var vocab = [
-	[
-	"I","a","the","and","is","see","can","to","like","my","said","went","play","at","look","go","up","no","it","we","come","for","here","me","are","have","on","saw","you","was"	
-	]
-];
+var vocab =
+	[ 
+	{"level":"a", "words": ["I","a","the","and","is","see","can","like","my"]},
+	{"level":"b", "words": ["look","it","no","said","went","play","at","go","up","we"]},
+	{"level":"c", "words": ["come","for","me","here","are","have","on","you","saw","was"]},
+	{"level":"d", "words": ["boy","girl","he","she","him","her","this","that","of","yes"]},
+	{"level":"e", "words": ["had","has","away","will","with","then","they","them","want","put"]},
+	{"level":"f", "words": ["under","litle","good","out","our","your","why","not","do","where"]},
+	{"level":"short a","words" : ["mad","rat","van","tag","sat","jam","bad","map","ham","fan"]},
+	{"level":"short e","words" : ["set","pet","hen","fed","men","bed","red","jet","leg","wet"]},
+	{"level":"short i","words" : ["six","fin","wig","sit","pig","dig","bit","him","lip","rip"]}
+	];
+	
+	
 
 var level = 0;
 var subIndex = 0;
@@ -14,17 +23,17 @@ var clickY;
 var releaseX;
 var releaseY;
 
-function getWordOrNumber(){
-	var myIndex = vocab[0].length*2;
+function getWord(){
+	var myIndex = vocab[level].words.length;
 	var myRandom = Math.floor( Math.random() * myIndex);
 	var toReturn;
 	
-	console.log(myIndex + " " + myRandom);
+	//console.log(myIndex + " " + myRandom);
 	
-	if(myRandom>=vocab[0].length) {
+	if(myRandom>=vocab[level].words.length) {
 		toReturn = Math.floor( Math.random() * 100);
 	} else {
-		toReturn = vocab[0][myRandom];
+		toReturn = vocab[level].words[myRandom];
 	}
 	
 	return toReturn;
@@ -70,27 +79,24 @@ function onMouseEnd(e) {
         	case 'x':
         		if(releaseX-clickX > 0) {
         			// increment
-        			(subIndex < vocab[level].length-1 ? subIndex++ : subIndex=0);
+        			(subIndex < vocab[level].words.length-1 ? subIndex++ : subIndex=0);
     				reDraw();
     	    	}
         		else {
         			// decrement
-        			(subIndex > 0 ? subIndex-- : subIndex=(vocab[level].length-1));
+        			(subIndex > 0 ? subIndex-- : subIndex=(vocab[level].words.length-1));
     				reDraw();
         		}
         	break;
         	
         	case 'y':
         		if(releaseY-clickY <= 0) {
-        			reDraw(playSound);
+        			//reDraw(playSound);
         		} else {
-        			document.getElementById("content").innerHTML = getWordOrNumber();
+        			document.getElementById("content").innerHTML = getWord();
         		}
-        		
-        		
         	break;
         }
-
     } else {
         releaseX = e.pageX;
         releaseY = e.pageY; 
@@ -106,26 +112,12 @@ window.addEventListener("load",function(){
 
 function reDraw(callback) {
 	var item = vocab[level];
-	document.getElementById('content').innerHTML = item[subIndex];
+	document.getElementById('content').innerHTML = item.words[subIndex];
 	document.getElementById('level').innerHTML = "Level:" + (level+1) + " use &uarr; &rarr; &darr; &larr;";
-	
-	ae = document.getElementById('audioItem');
-	ae.src = "/karis/wav/" + item[subIndex] + ".wav";
-	ae.load();
-	
-	//ga('send','event','ReDraw Function','Selected '+item[subIndex]+' Via Mouse or Gesture',callback?'with callback':'no callback');
-  	//setTimeout(function(){location.href=clickEvent.href},200);
-	
+
 	if(callback) {
 		callback();
 	}
-}
-
-function playSound(){
-	ae = document.getElementById('audioItem');
-		//ae.load();
-		ae.play();
-		console.log("Play: " + ae.src);
 }
 
 function KeyCheck(event) {
@@ -135,11 +127,11 @@ function KeyCheck(event) {
 
     if (KeyID === 39) {
         // console.log('right');
-        (subIndex < vocab[level].length-1 ? subIndex++ : subIndex=0);
+        (subIndex < vocab[level].words.length-1 ? subIndex++ : subIndex=0);
         reDraw();
     } else if (KeyID === 37) {
         // console.log('left'); 
-        (subIndex > 0 ? subIndex-- : subIndex=(vocab[level].length-1));
+        (subIndex > 0 ? subIndex-- : subIndex=(vocab[level].words.length-1));
         reDraw();
     }  else if (KeyID === 38) {
         //console.log('up'); 
@@ -148,22 +140,14 @@ function KeyCheck(event) {
     } else if (KeyID === 40) {
         //console.log('down'); 
         (level > 0 ? level-- : level=0);
-        //reDraw();
-        document.getElementById("content").innerHTML = getWordOrNumber();
+        reDraw();
+        document.getElementById("content").innerHTML = getWord();
     } else if(KeyID === 32) {
-    	reDraw(playSound);
+    	//reDraw(playSound);
     } else {
-    	console.log(KeyID);
+    	//console.log(KeyID);
     }
 }
-
-
-
-		
-	//document.getElementById("pressPlay").addEventListener('click', function() {
-	//	playSound();
-	//}, false);
-	
 	
 	window.addEventListener('keydown',KeyCheck,true);  
 	
