@@ -1,0 +1,4 @@
+RewriteEngine on
+
+RewriteRule ^api/vocab/(.*)/level/(.*)\/?$ /karis/api/?section=vocab&grade=$1&level=$2
+RewriteRule ^api/math/(.*)/level/(.*)\/?$ /karis/api/?section=math&grade=$1&level=$2
