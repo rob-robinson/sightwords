@@ -175,10 +175,17 @@ function KeyCheck(event) {
 
 window.addEventListener('keydown',KeyCheck,true);
 
-document.body.addEventListener('mousemove', onMouseMove, false);
-document.body.addEventListener('mousedown', onMouseStart, false);
-document.body.addEventListener('mouseup', onMouseEnd, false);
+document.getElementById("main_body").addEventListener('mousemove', onMouseMove, false);
+document.getElementById("main_body").addEventListener('mousedown', onMouseStart, false);
+document.getElementById("main_body").addEventListener('mouseup', onMouseEnd, false);
 
-document.body.addEventListener('touchmove', onMouseMove, false);
-document.body.addEventListener('touchstart', onMouseStart, false);
-document.body.addEventListener('touchend', onMouseEnd, false);
+document.getElementById("main_body").addEventListener('touchmove', onMouseMove, false);
+document.getElementById("main_body").addEventListener('touchstart', onMouseStart, false);
+document.getElementById("main_body").addEventListener('touchend', onMouseEnd, false);
+
+document.getElementById("ddl_subject").addEventListener('change', function(){
+
+    subject = this.value;
+    xhrGet(subject, grade, level, parseJSON, null);
+
+}, false);

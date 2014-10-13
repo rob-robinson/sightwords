@@ -5,6 +5,11 @@ body,html{
             min-width:100%;
             font-family: Arial, Helvetica, sans-serif;
         }
+
+#main_body{
+    /*min-height:100%;*/
+    margin-top:25px;
+}
         #outercontainer{
             position:relative;
             padding:0;
