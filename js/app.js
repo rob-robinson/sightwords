@@ -1,23 +1,34 @@
+var grade = 'k',
+    subject = 'math',
+    level = 1,
 
+    subIndex = 0,
 
-var grade = 'k';
-var subject = 'math';
-var level = 1;
+    mouseIsDown = false,
+    clickX, clickY,
+    releaseX, releaseY,
 
-var subIndex = 0;
+    items = {};
 
-var mouseIsDown = false;
-var clickX;
-var clickY;
-var releaseX;
-var releaseY;
+function xhrGet(subject, grade, level, callback, type) {
+
+    var reqUri = '/karis/api/'+subject+'/'+grade+'/level/'+level+'',
+        xhr = new XMLHttpRequest();
+
+    xhr.open("GET",reqUri,true);
+
+    if (type === null) {
+        xhr.responseType = type;
+    }
+
+    xhr.onload = callback;
+    xhr.send();
+}
 
 function getWord(){
-    var myIndex = vocab[level].words.length;
-    var myRandom = Math.floor( Math.random() * myIndex);
-    var toReturn;
-
-    //console.log(myIndex + " " + myRandom);
+    var myIndex = vocab[level].words.length,
+        myRandom = Math.floor( Math.random() * myIndex),
+        toReturn;
 
     if(myRandom>=vocab[level].words.length) {
         toReturn = Math.floor( Math.random() * 100);
@@ -40,7 +51,6 @@ function onMouseMove(evt) {
 function onMouseStart(e) {
     'use strict';
     e.preventDefault();
-    //console.log('hhh');
 
     if (e.changedTouches && e.changedTouches.length > 0) {
         clickX = e.changedTouches[0].pageX;
@@ -62,61 +72,47 @@ function onMouseEnd(e) {
         releaseX = e.changedTouches[0].pageX;
         releaseY = e.changedTouches[0].pageY;
 
+        // check to see if the swiping motion is more horizontal, or vertical
         var xOry = (Math.abs(releaseX-clickX)>Math.abs(releaseY-clickY)) ? "x" : "y";
 
         switch (xOry) {
+
+            // swipe was more horizontal
             case 'x':
                 if(releaseX-clickX > 0) {
-
                     moveItemForward();
-
-                }
-                else {
-
+                } else {
                     moveItemBackward();
-
                 }
-                break;
+            break;
 
+            // swipe was more vertical
             case 'y':
                 if(releaseY-clickY <= 0) {
-
                     moveOneLevelUp();
-
                 } else {
-
                     moveOneLevelDown();
-
                 }
-                break;
+            break;
         }
     } else {
         releaseX = e.pageX;
         releaseY = e.pageY;
-
         reDraw();
     }
 }
 
-
 window.addEventListener("load",function(){
-
     xhrGet(subject, grade, level, parseJSON, null);
-
 },false);
 
-
-parseJSON = function () {
-
+function parseJSON() {
     var parsedJSON = JSON.parse(this.responseText);
 
     // set global items to the parsed json:
     items = parsedJSON;
-
     reDraw();
-
-
-};
+}
 
 function reDraw(callback) {
 
@@ -133,39 +129,35 @@ function moveItemForward() {
     (subIndex < items.items.length - 1 ? subIndex++ : subIndex = 0);
     reDraw();
 }
+
 function moveItemBackward() {
     (subIndex > 0 ? subIndex-- : subIndex = (items.items.length - 1));
     reDraw();
 }
+
 function moveOneLevelUp() {
     level += 1;
     xhrGet(subject, grade, level, parseJSON, null);
 }
+
 function moveOneLevelDown() {
     (level > 1 ? level-- : level = 1);
     xhrGet(subject, grade, level, parseJSON, null);
 }
+
 function KeyCheck(event) {
     'use strict';
 
     var KeyID = event.keyCode;
 
     if (KeyID === 39) {
-
         moveItemForward()
-
     } else if (KeyID === 37) {
-
         moveItemBackward();
-
     }  else if (KeyID === 38) {
-
         moveOneLevelUp();
-
     } else if (KeyID === 40) {
-
         moveOneLevelDown();
-
     } else if(KeyID === 32) {
         //reDraw(playSound);
     } else {
