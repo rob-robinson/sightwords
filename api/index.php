@@ -10,7 +10,31 @@ if(isset($_GET['section'])){
                 switch ($_GET['level']){
 
                     case 1:
-                        echo '{"items":["One","Two","Three"]}';
+                        echo '{"items":[
+                        "bugs",
+                        "insect",
+                        "ant",
+                        "butterfly",
+                        "fly",
+                        "bee",
+                        "wasp",
+                        "crane fly",
+                        "beetle",
+                        "roly-poly",
+                        "centipede",
+                        "praying mantis",
+                        "caterpillar",
+                        "roach",
+                        "aphid",
+                        "bumble bee",
+                        "inchworm",
+                        "firefly",
+                        "walking stick",
+                        "abdomen",
+                        "poisonous",
+                        "chrysalis",
+                        "proboscis",
+                        "antennae"]}';
                         break;
                     case 2:
                         echo '{"items":["Two","Three","Four"]}';
