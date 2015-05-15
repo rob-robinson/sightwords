@@ -88,6 +88,8 @@ var app = {
                 // check to see if the swiping motion is more horizontal, or vertical
                 var xOry = (Math.abs(app.eventStore.releaseX-app.eventStore.clickX)>Math.abs(app.eventStore.releaseY-app.eventStore.clickY)) ? "x" : "y";
 
+                console.log(xOry);
+
                 switch (xOry) {
 
                     // swipe was more horizontal
