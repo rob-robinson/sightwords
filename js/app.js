@@ -154,6 +154,9 @@ var app = {
         moveItemForward : function() {
 
             (app.subIndex < app.data.items.length - 1 ? app.subIndex++ : app.subIndex = 0);
+
+            console.log("move item forward");
+
             app.reDraw();
 
         },
@@ -161,6 +164,9 @@ var app = {
         moveItemBackward : function() {
 
             (app.subIndex > 0 ? app.subIndex-- : app.subIndex = (app.data.items.length - 1));
+
+            console.log("move item backward");
+
             app.reDraw();
 
         },
@@ -168,6 +174,9 @@ var app = {
         moveOneLevelUp : function() {
 
             app.config.level += 1;
+
+            console.log("move up");
+
             app.xhrGet(app.parseJSON);
 
         },
@@ -175,6 +184,9 @@ var app = {
         moveOneLevelDown : function() {
 
             (app.config.level > 1 ? app.config.level-- : app.config.level = 1);
+
+            console.log("move down");
+
             app.xhrGet(app.parseJSON);
         }
     },
