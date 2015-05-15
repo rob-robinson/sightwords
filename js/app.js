@@ -191,13 +191,13 @@ var app = {
 
     reDraw : function(callback) {
 
-        document.getElementById('content').innerHTML = app.data.items.items[app.subIndex];
+        document.getElementById('content').innerHTML = app.data.items[app.subIndex];
         document.getElementById('level').innerHTML = "Level:" + app.config.level + " use &uarr; &rarr; &darr; &larr;";
 
         if(callback) {
             callback();
         }
-    },
+    }
 
 
 
