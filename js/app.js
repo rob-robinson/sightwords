@@ -81,6 +81,8 @@ var app = {
             e.preventDefault();
             app.eventStore.mouseIsDown = false;
 
+            console.dir(e);
+
             if (e.changedTouches && e.changedTouches.length > 0) {
                 app.eventStore.releaseX = e.changedTouches[0].pageX;
                 app.eventStore.releaseY = e.changedTouches[0].pageY;
