@@ -108,7 +108,7 @@ var app = {
             } else {
                 app.eventStore.releaseX = e.pageX;
                 app.eventStore.releaseY = e.pageY;
-                reDraw();
+                app.reDraw();
             }
         }, 
         KeyCheck : function (event) {
