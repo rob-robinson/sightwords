@@ -31,10 +31,8 @@ var app = {
 
         xhr.open("GET", reqUri, true);
 
-        xhr.onload = function(){
-            console.log("xhr");
-            return callback;
-        };
+        xhr.onload = callback;
+
         xhr.send();
     },
     getWord : function(){
@@ -183,6 +181,8 @@ var app = {
 
 
     parseJSON : function() {
+
+        console.log(this.responseText);
 
         var parsedJSON = JSON.parse(this.responseText);
         app.data.items = parsedJSON;
