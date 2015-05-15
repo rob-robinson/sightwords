@@ -20,7 +20,7 @@ var app = {
 
     xhrGet : function (callback) {
 
-        var reqUri = '/karis/api/' + app.config.subject + '/' + app.config.grade + '/level/' + app.config.level + '';
+        var reqUri = '/karis2/api/' + app.config.subject + '/' + app.config.grade + '/level/' + app.config.level + '';
         var xhr = new XMLHttpRequest();
 
         xhr.open("GET", reqUri, true);
