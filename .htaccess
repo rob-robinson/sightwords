@@ -1,5 +1,5 @@
 RewriteEngine on
 
-RewriteRule ^api/vocab/(.*)/level/(.*)\/?$ /karis/api/?section=vocab&grade=$1&level=$2
-RewriteRule ^api/math/(.*)/level/(.*)\/?$ /karis/api/?section=math&grade=$1&level=$2
-RewriteRule ^api/letter_sounds/(.*)/level/(.*)\/?$ /karis/api/?section=letter_sounds&grade=$1&level=$2
+RewriteRule ^api/vocab/(.*)/level/(.*)\/?$ /karis2/api/?section=vocab&grade=$1&level=$2
+RewriteRule ^api/math/(.*)/level/(.*)\/?$ /karis2/api/?section=math&grade=$1&level=$2
+RewriteRule ^api/letter_sounds/(.*)/level/(.*)\/?$ /karis2/api/?section=letter_sounds&grade=$1&level=$2
