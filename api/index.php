@@ -194,7 +194,7 @@ if (isset($_GET['section'])) {
 
 
 
-                        echo '{"items":' .json_encode($nums). '}';
+                        echo  json_encode('{"items":' . $nums . '}');
 
                         break;
 
