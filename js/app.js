@@ -16,9 +16,7 @@ var app = {
 
     subIndex : 0,
 
-    data : {
-        items : {}
-    },
+    data : {},
 
     setConfig : function(config){
         app.config = config;
@@ -197,7 +195,7 @@ var app = {
         console.log(this.responseText);
 
         var parsedJSON = JSON.parse(this.responseText);
-        app.data.items = parsedJSON;
+        app.data = parsedJSON;
         app.reDraw();
     },
 
