@@ -18,10 +18,6 @@ var app = {
 
     data : {},
 
-    setConfig : function(config){
-        app.config = config;
-    },
-
     xhrGet : function (callback) {
 
         var reqUri = '/karis/api/' + app.config.subject + '/' + app.config.grade + '/level/' + app.config.level + '';
@@ -32,23 +28,6 @@ var app = {
         xhr.onload = callback;
 
         xhr.send();
-    },
-    getWord : function(){
-        var myIndex = vocab[level].words.length,
-            myRandom = Math.floor( Math.random() * myIndex),
-            toReturn;
-
-        if(myRandom>=vocab[level].words.length) {
-            toReturn = Math.floor( Math.random() * 100);
-        } else {
-            toReturn = vocab[level].words[myRandom];
-        }
-
-        return toReturn;
-    },
-
-    getNumber : function () {
-        return Math.floor( Math.random() * 1000);
     },
 
     listeners : {
@@ -70,17 +49,12 @@ var app = {
             }
 
             app.eventStore.mouseIsDown = true;
-
-            console.log(app.eventStore);
-
         },
 
         onMouseEnd : function(e) {
             'use strict';
             e.preventDefault();
             app.eventStore.mouseIsDown = false;
-
-            console.dir(e);
 
             if (e.changedTouches) {
                 app.eventStore.releaseX = e.changedTouches[0].pageX;
@@ -90,44 +64,33 @@ var app = {
                 app.eventStore.releaseY = e.pageY;
             }
 
-            //if (e.changedTouches && e.changedTouches.length > 0) {
-            //    app.eventStore.releaseX = e.changedTouches[0].pageX;
-            //    app.eventStore.releaseY = e.changedTouches[0].pageY;
+            // check to see if the swiping motion is more horizontal, or vertical
+            var xOry = (Math.abs(app.eventStore.releaseX-app.eventStore.clickX)>Math.abs(app.eventStore.releaseY-app.eventStore.clickY)) ? "x" : "y";
 
-                // check to see if the swiping motion is more horizontal, or vertical
-                var xOry = (Math.abs(app.eventStore.releaseX-app.eventStore.clickX)>Math.abs(app.eventStore.releaseY-app.eventStore.clickY)) ? "x" : "y";
+            switch (xOry) {
 
-                console.log(xOry);
+                // swipe was more horizontal
+                case 'x':
+                    if(app.eventStore.releaseX-app.eventStore.clickX > 0) {
+                        app.moves.moveItemForward();
+                    } else {
+                        app.moves.moveItemBackward();
+                    }
+                    break;
 
-                switch (xOry) {
+                // swipe was more vertical
+                case 'y':
+                    if(app.eventStore.releaseY-app.eventStore.clickY <= 0) {
+                        app.moves.moveOneLevelUp();
+                    } else {
+                        app.moves.moveOneLevelDown();
+                    }
+                    break;
+            }
 
-                    // swipe was more horizontal
-                    case 'x':
-                        if(app.eventStore.releaseX-app.eventStore.clickX > 0) {
-                            app.moves.moveItemForward();
-                        } else {
-                            app.moves.moveItemBackward();
-                        }
-                        break;
+            app.updatePage();
+        },
 
-                    // swipe was more vertical
-                    case 'y':
-                        if(app.eventStore.releaseY-app.eventStore.clickY <= 0) {
-                            app.moves.moveOneLevelUp();
-                        } else {
-                            app.moves.moveOneLevelDown();
-                        }
-                        break;
-                }
-            //} else {
-            //    app.eventStore.releaseX = e.pageX;
-            //    app.eventStore.releaseY = e.pageY;
-            //    app.reDraw();
-            //}
-            app.reDraw();
-
-            console.log(app.eventStore);
-        }, 
         KeyCheck : function (event) {
             'use strict';
         
@@ -142,7 +105,7 @@ var app = {
             } else if (KeyID === 40) {
                 app.moves.moveOneLevelDown();
             } else if(KeyID === 32) {
-                //reDraw(playSound);
+                //updatePage(playSound);
             } else {
                 //console.log(KeyID);
             }
@@ -150,41 +113,22 @@ var app = {
     },
     moves : {
         moveItemForward : function() {
-
             (app.subIndex < app.data.items.length - 1 ? app.subIndex++ : app.subIndex = 0);
-
-            console.log("move item forward");
-
-            app.reDraw();
-
+            app.updatePage();
         },
 
         moveItemBackward : function() {
-
             (app.subIndex > 0 ? app.subIndex-- : app.subIndex = (app.data.items.length - 1));
-
-            console.log("move item backward");
-
-            app.reDraw();
-
+            app.updatePage();
         },
 
         moveOneLevelUp : function() {
-
             app.config.level += 1;
-
-            console.log("move up");
-
             app.xhrGet(app.parseJSON);
-
         },
 
         moveOneLevelDown : function() {
-
             (app.config.level > 1 ? app.config.level-- : app.config.level = 1);
-
-            console.log("move down");
-
             app.xhrGet(app.parseJSON);
         }
     },
@@ -192,26 +136,18 @@ var app = {
 
     parseJSON : function() {
 
-        console.log(this.responseText);
-
         var parsedJSON = JSON.parse(this.responseText);
         app.data = parsedJSON;
-        app.reDraw();
+        app.updatePage();
     },
 
-    reDraw : function(callback) {
+    updatePage : function(callback) {
 
         document.getElementById('content').innerHTML = app.data.items[app.subIndex];
         document.getElementById('level').innerHTML = "Level:" + app.config.level + " use &uarr; &rarr; &darr; &larr;";
 
-        if(callback) {
-            callback();
-        }
+        if(callback) { callback(); }
     }
-
-
-
-    
 };
 
 
@@ -234,7 +170,6 @@ document.getElementById("main_body").addEventListener('touchend', app.listeners.
 document.getElementById("ddl_subject").addEventListener('change', function(){
 
     app.config.subject = this.value;
-
     app.xhrGet(app.parseJSON);
 
 }, false);
