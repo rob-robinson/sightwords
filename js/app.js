@@ -31,7 +31,10 @@ var app = {
 
         xhr.open("GET", reqUri, true);
 
-        xhr.onload = callback;
+        xhr.onload = function(){
+            console.log("xhr");
+            return callback;
+        };
         xhr.send();
     },
     getWord : function(){
