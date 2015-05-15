@@ -134,14 +134,14 @@ var app = {
     moves : {
         moveItemForward : function() {
 
-            (app.subIndex < items.items.length - 1 ? app.subIndex++ : app.subIndex = 0);
+            (app.subIndex < app.data.items.length - 1 ? app.subIndex++ : app.subIndex = 0);
             app.reDraw();
 
         },
 
         moveItemBackward : function() {
 
-            (app.subIndex > 0 ? app.subIndex-- : app.subIndex = (items.items.length - 1));
+            (app.subIndex > 0 ? app.subIndex-- : app.subIndex = (app.data.items.length - 1));
             app.reDraw();
 
         },
