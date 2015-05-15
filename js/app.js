@@ -1,183 +1,209 @@
-var grade = 'k',
-    subject = 'math',
-    level = 1,
+var app = {
 
-    subIndex = 0,
+    config : {
+        grade : 'k',
+        subject : 'math',
+        level : 1
+    },
 
-    mouseIsDown = false,
-    clickX, clickY,
-    releaseX, releaseY,
+    eventStore : {
+        mouseIsDown : false,
+        clickX : null,
+        clickY : null,
+        releaseX : null,
+        releaseY : null
+    },
 
-    items = {};
+    subIndex : 0,
 
-function xhrGet(subject, grade, level, callback, type) {
+    data : {
+        items : {}
+    },
 
-    var reqUri = '/karis/api/'+subject+'/'+grade+'/level/'+level+'',
-        xhr = new XMLHttpRequest();
+    setConfig : function(config){
+        app.config = config;
+    },
 
-    xhr.open("GET",reqUri,true);
+    xhrGet : function (callback) {
 
-    if (type === null) {
-        xhr.responseType = type;
-    }
+        var reqUri = '/karis/api/' + app.config.subject + '/' + app.config.grade + '/level/' + app.config.level + '';
+        var xhr = new XMLHttpRequest();
 
-    xhr.onload = callback;
-    xhr.send();
-}
+        xhr.open("GET", reqUri, true);
 
-function getWord(){
-    var myIndex = vocab[level].words.length,
-        myRandom = Math.floor( Math.random() * myIndex),
-        toReturn;
+        xhr.onload = callback;
+        xhr.send();
+    },
+    getWord : function(){
+        var myIndex = vocab[level].words.length,
+            myRandom = Math.floor( Math.random() * myIndex),
+            toReturn;
 
-    if(myRandom>=vocab[level].words.length) {
-        toReturn = Math.floor( Math.random() * 100);
-    } else {
-        toReturn = vocab[level].words[myRandom];
-    }
-
-    return toReturn;
-}
-
-function getNumber() {
-    return Math.floor( Math.random() * 1000);
-}
-
-function onMouseMove(evt) {
-    'use strict';
-    evt.preventDefault();
-}
-
-function onMouseStart(e) {
-    'use strict';
-    e.preventDefault();
-
-    if (e.changedTouches && e.changedTouches.length > 0) {
-        clickX = e.changedTouches[0].pageX;
-        clickY = e.changedTouches[0].pageY;
-    } else {
-        clickX = e.pageX;
-        clickY = e.pageY;
-    }
-
-    mouseIsDown = true;
-}
-
-function onMouseEnd(e) {
-    'use strict';
-    e.preventDefault();
-    mouseIsDown = false;
-
-    if (e.changedTouches && e.changedTouches.length > 0) {
-        releaseX = e.changedTouches[0].pageX;
-        releaseY = e.changedTouches[0].pageY;
-
-        // check to see if the swiping motion is more horizontal, or vertical
-        var xOry = (Math.abs(releaseX-clickX)>Math.abs(releaseY-clickY)) ? "x" : "y";
-
-        switch (xOry) {
-
-            // swipe was more horizontal
-            case 'x':
-                if(releaseX-clickX > 0) {
-                    moveItemForward();
-                } else {
-                    moveItemBackward();
-                }
-            break;
-
-            // swipe was more vertical
-            case 'y':
-                if(releaseY-clickY <= 0) {
-                    moveOneLevelUp();
-                } else {
-                    moveOneLevelDown();
-                }
-            break;
+        if(myRandom>=vocab[level].words.length) {
+            toReturn = Math.floor( Math.random() * 100);
+        } else {
+            toReturn = vocab[level].words[myRandom];
         }
-    } else {
-        releaseX = e.pageX;
-        releaseY = e.pageY;
-        reDraw();
-    }
-}
 
-window.addEventListener("load",function(){
-    xhrGet(subject, grade, level, parseJSON, null);
+        return toReturn;
+    },
+
+    getNumber : function () {
+        return Math.floor( Math.random() * 1000);
+    },
+
+    listeners : {
+        onMouseMove : function(evt) {
+            'use strict';
+            evt.preventDefault();
+        },
+
+        onMouseStart : function (e) {
+            'use strict';
+            e.preventDefault();
+
+            if (e.changedTouches && e.changedTouches.length > 0) {
+                app.eventStore.clickX = e.changedTouches[0].pageX;
+                app.eventStore.clickY = e.changedTouches[0].pageY;
+            } else {
+                app.eventStore.clickX = e.pageX;
+                app.eventStore.clickY = e.pageY;
+            }
+
+            app.eventStore.mouseIsDown = true;
+        },
+
+        onMouseEnd : function(e) {
+            'use strict';
+            e.preventDefault();
+            app.eventStore.mouseIsDown = false;
+
+            if (e.changedTouches && e.changedTouches.length > 0) {
+                app.eventStore.releaseX = e.changedTouches[0].pageX;
+                app.eventStore.releaseY = e.changedTouches[0].pageY;
+
+                // check to see if the swiping motion is more horizontal, or vertical
+                var xOry = (Math.abs(app.eventStore.releaseX-app.eventStore.clickX)>Math.abs(app.eventStore.releaseY-app.eventStore.clickY)) ? "x" : "y";
+
+                switch (xOry) {
+
+                    // swipe was more horizontal
+                    case 'x':
+                        if(app.eventStore.releaseX-app.eventStore.clickX > 0) {
+                            app.moves.moveItemForward();
+                        } else {
+                            app.moves.moveItemBackward();
+                        }
+                        break;
+
+                    // swipe was more vertical
+                    case 'y':
+                        if(app.eventStore.releaseY-app.eventStore.clickY <= 0) {
+                            app.moves.moveOneLevelUp();
+                        } else {
+                            app.moves.moveOneLevelDown();
+                        }
+                        break;
+                }
+            } else {
+                app.eventStore.releaseX = e.pageX;
+                app.eventStore.releaseY = e.pageY;
+                reDraw();
+            }
+        }, 
+        KeyCheck : function (event) {
+            'use strict';
+        
+            var KeyID = event.keyCode;
+        
+            if (KeyID === 39) {
+                app.moves.moveItemForward()
+            } else if (KeyID === 37) {
+                app.moves.moveItemBackward();
+            }  else if (KeyID === 38) {
+                app.moves.moveOneLevelUp();
+            } else if (KeyID === 40) {
+                app.moves.moveOneLevelDown();
+            } else if(KeyID === 32) {
+                //reDraw(playSound);
+            } else {
+                //console.log(KeyID);
+            }
+        }
+    },
+    moves : {
+        moveItemForward : function() {
+
+            (app.subIndex < items.items.length - 1 ? app.subIndex++ : app.subIndex = 0);
+            app.reDraw();
+
+        },
+
+        moveItemBackward : function() {
+
+            (app.subIndex > 0 ? app.subIndex-- : app.subIndex = (items.items.length - 1));
+            app.reDraw();
+
+        },
+
+        moveOneLevelUp : function() {
+
+            app.config.level += 1;
+            app.xhrGet(app.parseJSON);
+
+        },
+
+        moveOneLevelDown : function() {
+
+            (app.config.level > 1 ? app.config.level-- : app.config.level = 1);
+            app.xhrGet(app.parseJSON);
+        }
+    },
+
+
+    parseJSON : function() {
+
+        var parsedJSON = JSON.parse(this.responseText);
+        app.data.items = parsedJSON;
+        app.reDraw();
+    },
+
+    reDraw : function(callback) {
+
+        document.getElementById('content').innerHTML = app.data.items.items[app.subIndex];
+        document.getElementById('level').innerHTML = "Level:" + app.config.level + " use &uarr; &rarr; &darr; &larr;";
+
+        if(callback) {
+            callback();
+        }
+    },
+
+
+
+    
+};
+
+
+window.addEventListener("load",function() {
+    
+    app.xhrGet(app.parseJSON);
+    
 },false);
 
-function parseJSON() {
-    var parsedJSON = JSON.parse(this.responseText);
+window.addEventListener('keydown', app.listeners.KeyCheck,true);
 
-    // set global items to the parsed json:
-    items = parsedJSON;
-    reDraw();
-}
+document.getElementById("main_body").addEventListener('mousemove', app.listeners.onMouseMove, false);
+document.getElementById("main_body").addEventListener('mousedown', app.listeners.onMouseStart, false);
+document.getElementById("main_body").addEventListener('mouseup', app.listeners.onMouseEnd, false);
 
-function reDraw(callback) {
-
-    document.getElementById('content').innerHTML = items.items[subIndex];
-    document.getElementById('level').innerHTML = "Level:" + level + " use &uarr; &rarr; &darr; &larr;";
-
-
-    if(callback) {
-        callback();
-    }
-}
-
-function moveItemForward() {
-    (subIndex < items.items.length - 1 ? subIndex++ : subIndex = 0);
-    reDraw();
-}
-
-function moveItemBackward() {
-    (subIndex > 0 ? subIndex-- : subIndex = (items.items.length - 1));
-    reDraw();
-}
-
-function moveOneLevelUp() {
-    level += 1;
-    xhrGet(subject, grade, level, parseJSON, null);
-}
-
-function moveOneLevelDown() {
-    (level > 1 ? level-- : level = 1);
-    xhrGet(subject, grade, level, parseJSON, null);
-}
-
-function KeyCheck(event) {
-    'use strict';
-
-    var KeyID = event.keyCode;
-
-    if (KeyID === 39) {
-        moveItemForward()
-    } else if (KeyID === 37) {
-        moveItemBackward();
-    }  else if (KeyID === 38) {
-        moveOneLevelUp();
-    } else if (KeyID === 40) {
-        moveOneLevelDown();
-    } else if(KeyID === 32) {
-        //reDraw(playSound);
-    } else {
-        //console.log(KeyID);
-    }
-}
-
-window.addEventListener('keydown',KeyCheck,true);
-
-document.getElementById("main_body").addEventListener('mousemove', onMouseMove, false);
-document.getElementById("main_body").addEventListener('mousedown', onMouseStart, false);
-document.getElementById("main_body").addEventListener('mouseup', onMouseEnd, false);
-
-document.getElementById("main_body").addEventListener('touchmove', onMouseMove, false);
-document.getElementById("main_body").addEventListener('touchstart', onMouseStart, false);
-document.getElementById("main_body").addEventListener('touchend', onMouseEnd, false);
+document.getElementById("main_body").addEventListener('touchmove', app.listeners.onMouseMove, false);
+document.getElementById("main_body").addEventListener('touchstart', app.listeners.onMouseStart, false);
+document.getElementById("main_body").addEventListener('touchend', app.listeners.onMouseEnd, false);
 
 document.getElementById("ddl_subject").addEventListener('change', function(){
 
-    subject = this.value;
-    xhrGet(subject, grade, level, parseJSON, null);
+    app.config.subject = this.value;
+
+    app.xhrGet(app.parseJSON);
 
 }, false);
