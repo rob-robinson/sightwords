@@ -83,8 +83,13 @@ var app = {
 
             console.dir(e);
 
-            app.eventStore.releaseX = e.changedTouches[0].pageX || e.pageX;
-            app.eventStore.releaseY = e.changedTouches[0].pageY || e.pageY;
+            if (e.changedTouches) {
+                app.eventStore.releaseX = e.changedTouches[0].pageX;
+                app.eventStore.releaseY = e.changedTouches[0].pageY;
+            } else {
+                app.eventStore.releaseX = e.pageX;
+                app.eventStore.releaseY = e.pageY;
+            }
 
             //if (e.changedTouches && e.changedTouches.length > 0) {
             //    app.eventStore.releaseX = e.changedTouches[0].pageX;
