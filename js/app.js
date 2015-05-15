@@ -83,9 +83,12 @@ var app = {
 
             console.dir(e);
 
-            if (e.changedTouches && e.changedTouches.length > 0) {
-                app.eventStore.releaseX = e.changedTouches[0].pageX;
-                app.eventStore.releaseY = e.changedTouches[0].pageY;
+            app.eventStore.releaseX = e.changedTouches[0].pageX || e.pageX;
+            app.eventStore.releaseY = e.changedTouches[0].pageY || e.pageY;
+
+            //if (e.changedTouches && e.changedTouches.length > 0) {
+            //    app.eventStore.releaseX = e.changedTouches[0].pageX;
+            //    app.eventStore.releaseY = e.changedTouches[0].pageY;
 
                 // check to see if the swiping motion is more horizontal, or vertical
                 var xOry = (Math.abs(app.eventStore.releaseX-app.eventStore.clickX)>Math.abs(app.eventStore.releaseY-app.eventStore.clickY)) ? "x" : "y";
@@ -112,11 +115,12 @@ var app = {
                         }
                         break;
                 }
-            } else {
-                app.eventStore.releaseX = e.pageX;
-                app.eventStore.releaseY = e.pageY;
-                app.reDraw();
-            }
+            //} else {
+            //    app.eventStore.releaseX = e.pageX;
+            //    app.eventStore.releaseY = e.pageY;
+            //    app.reDraw();
+            //}
+            app.reDraw();
 
             console.log(app.eventStore);
         }, 
