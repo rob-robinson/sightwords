@@ -184,6 +184,20 @@ if (isset($_GET['section'])) {
                         echo '{"items":[' . join(',', $nums) . ']}';
 
                         break;
+
+                    case 5:
+
+                        for ($i = 0; $i < 25; $i += 1) {
+                            $nums[] = rand(1, 10) . " + " . rand(1, 10) . " = ___ ";
+
+                        }
+
+
+
+                        echo '{"items":[' . join(',', $nums) . ']}';
+
+                        break;
+
                 }
             }
 
