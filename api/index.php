@@ -194,7 +194,7 @@ if (isset($_GET['section'])) {
 
 
 
-                        echo '{"items":[' . join(',', $nums) . ']}';
+                        echo '{"items":' .json_encode($nums). '}';
 
                         break;
 
