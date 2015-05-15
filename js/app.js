@@ -71,6 +71,9 @@ var app = {
             }
 
             app.eventStore.mouseIsDown = true;
+
+            console.log(app.eventStore);
+
         },
 
         onMouseEnd : function(e) {
@@ -110,6 +113,8 @@ var app = {
                 app.eventStore.releaseY = e.pageY;
                 app.reDraw();
             }
+
+            console.log(app.eventStore);
         }, 
         KeyCheck : function (event) {
             'use strict';
