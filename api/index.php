@@ -171,7 +171,7 @@ if (isset($_GET['section'])) {
                         echo '{"items":[' . join(',', $nums) . ']}';
 
                         break;
-                    case 3:
+                    case 3: // --
 
                         for ($i = 0; $i < 25; $i += 1) {
                             $nums[] = rand(2000, 5000);
