@@ -1,159 +1,182 @@
-var app = {
+var app = function(){
 
-    config : {
+    var currentState = {
         grade : 'k',
         subject : 'math',
         level : 1
-    },
+    };
 
-    eventStore : {
+    var eventStore = {
         mouseIsDown : false,
         clickX : null,
         clickY : null,
         releaseX : null,
         releaseY : null
-    },
+    };
 
-    subIndex : 0,
+    var subIndex = 0;
 
-    data : {},
+    var data = {};
 
-    xhrGet : function (callback) {
+    function fetchAPIData(callback) {
 
-        var reqUri = '/karis2/api/' + app.config.subject + '/' + app.config.grade + '/level/' + app.config.level + '';
+        var reqUri = '/api/' + currentState.subject + '/' + currentState.grade + '/level/' + currentState.level + '';
         var xhr = new XMLHttpRequest();
 
         xhr.open("GET", reqUri, true);
-
         xhr.onload = callback;
-
         xhr.send();
-    },
+    };
 
-    listeners : {
-        onMouseMove : function(evt) {
-            'use strict';
-            evt.preventDefault();
-        },
+    var listeners = function() {
 
-        onMouseStart : function (e) {
-            'use strict';
+        'use strict';
+
+        function onMouseMove(e) {
+            e.preventDefault();
+        };
+
+        function onMouseStart(e) {
             e.preventDefault();
 
+            // if event is a touch screen : ... TODO: which devices support each ?
             if (e.changedTouches && e.changedTouches.length > 0) {
-                app.eventStore.clickX = e.changedTouches[0].pageX;
-                app.eventStore.clickY = e.changedTouches[0].pageY;
-            } else {
-                app.eventStore.clickX = e.pageX;
-                app.eventStore.clickY = e.pageY;
+                eventStore.clickX = e.changedTouches[0].pageX;
+                eventStore.clickY = e.changedTouches[0].pageY;
+            } else { // event is an actual click ( maybe ) ...
+                eventStore.clickX = e.pageX;
+                eventStore.clickY = e.pageY;
             }
 
-            app.eventStore.mouseIsDown = true;
-        },
+            eventStore.mouseIsDown = true;
+        };
 
-        onMouseEnd : function(e) {
+        function onMouseEnd(e) {
             'use strict';
             e.preventDefault();
-            app.eventStore.mouseIsDown = false;
+
+            eventStore.mouseIsDown = false;
 
             if (e.changedTouches) {
-                app.eventStore.releaseX = e.changedTouches[0].pageX;
-                app.eventStore.releaseY = e.changedTouches[0].pageY;
+                eventStore.releaseX = e.changedTouches[0].pageX;
+                eventStore.releaseY = e.changedTouches[0].pageY;
             } else {
-                app.eventStore.releaseX = e.pageX;
-                app.eventStore.releaseY = e.pageY;
+                eventStore.releaseX = e.pageX;
+                eventStore.releaseY = e.pageY;
             }
 
             // check to see if the swiping motion is more horizontal, or vertical
-            var xOry = (Math.abs(app.eventStore.releaseX-app.eventStore.clickX)>Math.abs(app.eventStore.releaseY-app.eventStore.clickY)) ? "x" : "y";
+            var xOry =
+                (
+                    Math.abs(eventStore.releaseX - eventStore.clickX)
+                    >
+                    Math.abs(eventStore.releaseY - eventStore.clickY)
+                )
+                    ? "x"
+                    : "y";
 
             switch (xOry) {
 
                 // swipe was more horizontal
                 case 'x':
-                    if(app.eventStore.releaseX-app.eventStore.clickX > 0) {
-                        app.moves.moveItemForward();
+                    if(eventStore.releaseX-eventStore.clickX > 0) {
+                        moves.moveItemForward();
                     } else {
-                        app.moves.moveItemBackward();
+                        moves.moveItemBackward();
                     }
                     break;
 
                 // swipe was more vertical
                 case 'y':
-                    if(app.eventStore.releaseY-app.eventStore.clickY <= 0) {
-                        app.moves.moveOneLevelUp();
+                    if(eventStore.releaseY-eventStore.clickY <= 0) {
+                        moves.moveOneLevelUp();
                     } else {
-                        app.moves.moveOneLevelDown();
+                        moves.moveOneLevelDown();
                     }
                     break;
             }
 
-            app.updatePage();
-        },
+            updatePage();
+        };
 
-        KeyCheck : function (event) {
+        function KeyCheck(e) {
             'use strict';
         
-            var KeyID = event.keyCode;
-        
-            if (KeyID === 39) {
-                app.moves.moveItemForward()
-            } else if (KeyID === 37) {
-                app.moves.moveItemBackward();
-            }  else if (KeyID === 38) {
-                app.moves.moveOneLevelUp();
-            } else if (KeyID === 40) {
-                app.moves.moveOneLevelDown();
-            } else if(KeyID === 32) {
-                //updatePage(playSound);
-            } else {
-                //console.log(KeyID);
+            var KeyID = e.keyCode;
+
+            switch(KeyID){
+                case 39: // left arrow
+                    moves.moveItemForward()
+                    break;
+                case 37: // right arrow
+                    moves.moveItemBackward();
+                    break;
+                case 38: // up arrow
+                    moves.moveOneLevelUp();
+                    break;
+                case 40: // down arrow
+                    moves.moveOneLevelDown();
+                    break;
+                case 32: // space bar
+                    // updatePage(playSound);
+                    break;
+                default:
+                    // console.log(KeyID);
+                    break;
             }
-        }
-    },
-    moves : {
-        moveItemForward : function() {
-            (app.subIndex < app.data.items.length - 1 ? app.subIndex++ : app.subIndex = 0);
-            app.updatePage();
-        },
+        };
+        return {KeyCheck:KeyCheck, onMouseEnd:onMouseEnd, onMouseStart:onMouseStart, onMouseMove:onMouseMove};
+    }();
 
-        moveItemBackward : function() {
-            (app.subIndex > 0 ? app.subIndex-- : app.subIndex = (app.data.items.length - 1));
-            app.updatePage();
-        },
+    var moves = function(){
+        function moveItemForward() {
+            (subIndex < data.items.length - 1 ? subIndex++ : subIndex = 0);
+            updatePage();
+        };
+        function moveItemBackward() {
+            (subIndex > 0 ? subIndex-- : subIndex = (data.items.length - 1));
+            updatePage();
+        };
+        function moveOneLevelUp() {
+            currentState.level += 1;
+            fetchAPIData(parseJSON);
+        };
+        function moveOneLevelDown() {
+            (currentState.level > 1 ? currentState.level-- : currentState.level = 1);
+            fetchAPIData(parseJSON);
+        };
+        return {moveItemForward:moveItemForward, moveItemBackward:moveItemBackward, moveOneLevelUp:moveOneLevelUp, moveOneLevelDown:moveOneLevelDown}
+    }();
 
-        moveOneLevelUp : function() {
-            app.config.level += 1;
-            app.xhrGet(app.parseJSON);
-        },
-
-        moveOneLevelDown : function() {
-            (app.config.level > 1 ? app.config.level-- : app.config.level = 1);
-            app.xhrGet(app.parseJSON);
-        }
-    },
-
-
-    parseJSON : function() {
-
+    function parseJSON() {
         var parsedJSON = JSON.parse(this.responseText);
-        app.data = parsedJSON;
-        app.updatePage();
-    },
+        data = parsedJSON;
+        updatePage();
+    };
 
-    updatePage : function(callback) {
+    function updatePage(callback) {
 
-        document.getElementById('content').innerHTML = app.data.items[app.subIndex];
-        document.getElementById('level').innerHTML = "Level:" + app.config.level + " use &uarr; &rarr; &darr; &larr;";
+        document.getElementById('content').innerHTML = data.items[subIndex];
+        document.getElementById('level').innerHTML = "Level:" + currentState.level + " use &uarr; &rarr; &darr; &larr;";
 
         if(callback) { callback(); }
     }
-};
 
+    return {
+        currentState:currentState,
+        eventStore:eventStore,
+        subIndex:subIndex,
+        data:data,
+        fetchAPIData:fetchAPIData,
+        moves:moves,
+        listeners:listeners,
+        parseJSON:parseJSON,
+        updatePage:updatePage }
+}();
 
 window.addEventListener("load",function() {
     
-    app.xhrGet(app.parseJSON);
+    app.fetchAPIData(app.parseJSON);
     
 },false);
 
@@ -169,7 +192,7 @@ document.getElementById("main_body").addEventListener('touchend', app.listeners.
 
 document.getElementById("ddl_subject").addEventListener('change', function(){
 
-    app.config.subject = this.value;
-    app.xhrGet(app.parseJSON);
+    app.currentState.subject = this.value;
+    app.fetchAPIData(app.parseJSON);
 
 }, false);

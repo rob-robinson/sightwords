@@ -152,9 +152,6 @@ if (isset($_GET['section'])) {
 
                 switch ($_GET['level']) {
 
-
-
-
                     case 1:
 
                         for ($i = 0; $i < 25; $i += 1) {
