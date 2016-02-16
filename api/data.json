@@ -1,0 +1,44 @@
+{
+    "letter_sounds": 
+    [
+        {"items":[
+            "m","g","D","b","o","J","K","x","L","a","s","P","U","e","h","n","Z","t","y","R","f","I","x","H","M","z",
+            "u","O","i","v","y","wh","A","l","Ch","N","G","sh","r","Ph","ch","F","Th","v","E","g","V","a","w",
+            "t","s","y","ph","K","qu","X","Sh","i","u","th","K","b","L","g","J","a","m","o","x","D","n","P",
+            "t","e","y","s","h","R","U","Z","u","M","x","i","f","z","I","v","H","O","l","A","N","sh","y","Ph",
+            "Ch","r","wh","G","w","ch","V","g","Th","a","F","t","v","E"]
+        }
+    ],
+    "vocab": [
+        {"items":["all","I","an","go","my","no","be","at","sat","yes"]},
+        {"items":["are","can","had","am","into","let","day","did","has","me"]},
+        {"items":["little","big","as","see","we","run","was","saw","two","too"]},
+        {"items":["will","ran","this","up","down","Mrs.","Mr.","Miss","on","ask"]},
+        {"items":["new","old","about","from","girl","have","came","come","get","off"]},
+        {"items":["he","away","boy","its","do","by","out","sun","they","she"]},
+        {"items":["not","help","dad","baby","his","or","look","if","said","way"]},
+        {"items":["when","stop","say","thing","what","put","cat","dog","mother","father"]},
+        {"items":["men","him","but","cry","fun","got","bed","were","with","sky"]},
+        {"items":["pet","room","very","tell","why","her","fly","hat","oh","now"]},
+        {"items":["book","hello","ball","pig","tree","stay","so","would","could","may"]},
+        {"items":["aunt","know","miss","best","car","grandfather","grandmother","here","hill","eat"]},
+        {"items":["after","bit","apple","fat","just","like","mad","took","over","then"]},
+        {"items":["three","play","take","want","us","wall","uncle","sleep","pick","toy"]},
+        {"items":["went","happy","gave","for","fast","call","bring","cake","how","good"]},
+        {"items":["man","night","woman","roll","under","white","boat","children","make"]},
+        {"items":["once","next","long","around","bat","cold","four","name","fell","every"]},
+        {"items":["them","wet","use","thank","your","rain","please","there","work","side"]},
+        {"items":["egg","doll","hair","door","noise","someone","train","yard","laugh","money"]},
+        {"items":["build","afraid","horse","pink","gray","color","near","guess","water","rock"]},
+        {"items":["brown","tail","ready","wind","garden","farm","must","basket","head","airplane"]},
+        {"items":["balloon","heard","rabbit","window","snow","hurry","broken","shall","picture","wagon"]},
+        {"items":["shoe","who","good-bye","hear","blue","yellow","orange","green","red","purple"]},
+        {"items":["hand","found","birthday","hole","fish","street","bird","cow","pretty","black"]},
+        {"items":["paper","their","sometimes","times","funny","goat","chair","nose","made","truck"]},
+        {"items":["pocket","school","paint","box","began","live","bear","find","leave","morning"]},
+        {"items":["something","road","ride","wish","story","catch","fire","dress","barn","chicken"]},
+        {"items":["pull","walk","think","again","another","ate","open","many","far","give"]},
+        {"items":["add","lost","house","other","noon","jump","home","coat","ground","first"]},
+        {"items":["our","party","some","soon","town","where","feet","five","back","animal"]}
+    ]
+}
