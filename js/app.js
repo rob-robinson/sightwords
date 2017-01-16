@@ -55,7 +55,7 @@ var app = function(){
 
             var newSubject = this.value;
 
-            console.log(this.value);
+            //console.log(this.value);
 
             currentState.subject = newSubject;
             currentState.level = 0;
@@ -147,7 +147,7 @@ var app = function(){
     var moves = function(){
         function moveItemForward() {
 
-            console.log(currentState);
+            //console.log(currentState);
 
             (subIndex < data[currentState.subject][currentState.level].items.length - 1 ? subIndex++ : subIndex = 0);
             updatePage();
@@ -180,7 +180,7 @@ var app = function(){
 
     function updatePage(callback) {
 
-        console.log(currentState);
+        //console.log(currentState);
 
         document.getElementById('content').innerHTML = data[currentState.subject][currentState.level].items[subIndex];
         document.getElementById('level').innerHTML = "Subject:" + currentState.subject + ", Level:" + currentState.level + " use &uarr; &rarr; &darr; &larr;";
