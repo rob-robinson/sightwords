@@ -216,4 +216,4 @@ document.getElementById("main_body").addEventListener('touchmove', app.listeners
 document.getElementById("main_body").addEventListener('touchstart', app.listeners.onMouseStart, false);
 document.getElementById("main_body").addEventListener('touchend', app.listeners.onMouseEnd, false);
 
-document.getElementById("ddl_subject").addEventListener('change', app.listeners.onChangeSubjectDDL, false);
+//document.getElementById("ddl_subject").addEventListener('change', app.listeners.onChangeSubjectDDL, false);
